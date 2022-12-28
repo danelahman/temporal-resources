@@ -15,7 +15,9 @@ open import Syntax.Contexts
 open import Syntax.Renamings
 
 open import Semantics.Interpretation Mod
+open import Semantics.Interpretation.Properties.split-env-isomorphism Mod
 open import Semantics.Renamings Mod
+open import Semantics.Renamings.Properties.eq-ren Mod
 
 open import Util.Equality
 open import Util.Operations
@@ -305,25 +307,147 @@ env-⟨⟩-ᶜ-split-env-nat {Γ} {Γ' ⟨ τ' ⟩} {A} (suc τ) p with suc τ �
 
 
 
+env-⟨⟩-ᶜ-split-env⁻¹-nat : ∀ {Γ Γ' A}
+                         → (τ : Time)
+                         → (p : τ ≤ ctx-time Γ')
+                         →    env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} {A = A} τ
+                                (≤-trans p
+                                  (≤-trans
+                                    (m≤n+m (ctx-time Γ') (ctx-time Γ))
+                                    (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+                           ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+                         ≡    ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+                           ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+                           ∘ᵐ env-⟨⟩-ᶜ {Γ'} {⟦ Γ ⟧ᵉᵒ A} τ p
 
-
-
-
-
-
-
-
-
-postulate
-  env-⟨⟩-ᶜ-split-env⁻¹-nat : ∀ {Γ Γ' A}
-                           → (τ : Time)
-                           → (p : τ ≤ ctx-time Γ')
-                           →    env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} {A = A} τ
-                                  (≤-trans p
-                                    (≤-trans
-                                      (m≤n+m (ctx-time Γ') (ctx-time Γ))
-                                      (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
-                             ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
-                           ≡    ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
-                             ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
-                             ∘ᵐ env-⟨⟩-ᶜ {Γ'} {⟦ Γ ⟧ᵉᵒ A} τ p
+env-⟨⟩-ᶜ-split-env⁻¹-nat {Γ} {Γ'} {A} τ p =
+  begin
+       env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} {A = A} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ sym (∘ᵐ-identityˡ _) ⟩
+       idᵐ
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congˡ (sym ⟨⟩-idᵐ) ⟩
+       ⟨ τ ⟩ᶠ idᵐ
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨⟩
+       ⟨ τ ⟩ᶠ (⟦ eq-ren (refl {x = Γ ++ᶜ Γ' -ᶜ τ}) ⟧ʳ)
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congˡ (cong ⟨ τ ⟩ᶠ
+      (cong
+        (λ q → ⟦ eq-ren {Γ ++ᶜ Γ' -ᶜ τ} {Γ ++ᶜ Γ' -ᶜ τ} q ⟧ʳ)
+        {x = refl {x = Γ ++ᶜ Γ' -ᶜ τ}}
+        {y = trans (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)}
+        uip)) ⟩
+       ⟨ τ ⟩ᶠ (⟦ eq-ren (trans (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ)
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congˡ (cong ⟨ τ ⟩ᶠ (sym
+      (eq-ren-trans (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)))) ⟩
+       ⟨ τ ⟩ᶠ (   ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+               ∘ᵐ ⟦ eq-ren (++ᶜ-ᶜ {Γ} {Γ'} {τ} p) ⟧ʳ)
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ sym (trans (sym (∘ᵐ-assoc _ _ _)) (∘ᵐ-congˡ (sym (⟨⟩-∘ᵐ _ _)))) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ ⟦ eq-ren (++ᶜ-ᶜ {Γ} {Γ'} {τ} p) ⟧ʳ
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (sym (∘ᵐ-identityˡ _)) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ idᵐ
+    ∘ᵐ ⟨ τ ⟩ᶠ ⟦ eq-ren (++ᶜ-ᶜ {Γ} {Γ'} {τ} p) ⟧ʳ
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congˡ (sym ⟨⟩-idᵐ)) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ idᵐ
+    ∘ᵐ ⟨ τ ⟩ᶠ ⟦ eq-ren (++ᶜ-ᶜ {Γ} {Γ'} {τ} p) ⟧ʳ
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (sym (trans (sym (∘ᵐ-assoc _ _ _)) (trans (∘ᵐ-congˡ (sym (⟨⟩-∘ᵐ _ _)))
+      (∘ᵐ-congˡ (cong ⟨ τ ⟩ᶠ (split-env-split-env⁻¹-iso
+                               {Γ ++ᶜ (Γ' -ᶜ τ)} {Γ} {Γ' -ᶜ τ} {A} (≡-split refl))))))) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ ⟨ τ ⟩ᶠ ⟦ eq-ren (++ᶜ-ᶜ {Γ} {Γ'} {τ} p) ⟧ʳ
+    ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+         (≤-trans p
+           (≤-trans
+             (m≤n+m (ctx-time Γ') (ctx-time Γ))
+             (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ')))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (sym (trans (∘ᵐ-assoc _ _ _) (∘ᵐ-congʳ (∘ᵐ-assoc _ _ _))))) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ (   ⟨ τ ⟩ᶠ (split-env {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+        ∘ᵐ ⟨ τ ⟩ᶠ ⟦ eq-ren (++ᶜ-ᶜ {Γ} {Γ'} {τ} p) ⟧ʳ
+        ∘ᵐ env-⟨⟩-ᶜ {Γ ++ᶜ Γ'} τ
+             (≤-trans p
+               (≤-trans
+                 (m≤n+m (ctx-time Γ') (ctx-time Γ))
+                 (≤-reflexive (sym (ctx-time-++ᶜ Γ Γ'))))))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-congˡ (sym (env-⟨⟩-ᶜ-split-env-nat τ p)))) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ (   env-⟨⟩-ᶜ {Γ'} {⟦ Γ ⟧ᵉᵒ A} τ p
+        ∘ᵐ split-env {Γ' = Γ} {Γ'' = Γ'} (≡-split refl))
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-assoc _ _ _)) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ env-⟨⟩-ᶜ {Γ'} {⟦ Γ ⟧ᵉᵒ A} τ p
+    ∘ᵐ split-env {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+    ∘ᵐ split-env⁻¹ {Γ' = Γ} {Γ'' = Γ'} (≡-split refl)
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-congʳ
+      (split-env⁻¹-split-env-iso {Γ ++ᶜ Γ'} {Γ} {Γ'} {A} (≡-split refl)))) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ env-⟨⟩-ᶜ {Γ'} {⟦ Γ ⟧ᵉᵒ A} τ p
+    ∘ᵐ idᵐ
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-identityʳ _)) ⟩
+       ⟨ τ ⟩ᶠ ⟦ eq-ren (sym (++ᶜ-ᶜ {Γ} {Γ'} {τ} p)) ⟧ʳ
+    ∘ᵐ ⟨ τ ⟩ᶠ (split-env⁻¹ {Γ' = Γ} {Γ'' = Γ' -ᶜ τ} (≡-split refl))
+    ∘ᵐ env-⟨⟩-ᶜ {Γ'} {⟦ Γ ⟧ᵉᵒ A} τ p
+  ∎
