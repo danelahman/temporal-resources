@@ -127,8 +127,7 @@ What we currently have:
 What we currently do not have:
 
 * In `Semantics/`, some of the auxiliary lemmas used in the high-level
-  proofs are currently partially finished (bugs) or postulated (time), 
-  specifically:
+  proofs are currently partially finished, specifically:
   
   * `Semantics/Renamings/Properties/env-⟨⟩-ᶜ-ren-naturality.agda` runs
     into the problem with `with`-abstractions producing ill-typed
