@@ -104,13 +104,13 @@ structure of this model follows the modules of the abstract setup.
 
 ## The work in progress aspect
 
-Not all the desired results are currently written up in Agda, for
-three main reasons: paper submission deadline; running into Agda's bug
-where due to excessive eta-contraction `with`-abstractions end up
-producing ill-typed Agda terms
-([#2732](https://github.com/agda/agda/issues/2732)); and the (naive,
-straightforward attempt at the) concrete presheaf model producing
-humongous inequational Agda terms in composite equations/diagrams.
+Not all the desired results are currently written up in Agda, for 
+two main reasons: running into Agda's bug where due to excessive
+eta-contraction `with`-abstractions end up producing ill-typed Agda
+terms ([#2732](https://github.com/agda/agda/issues/2732)); and the
+(naive, straightforward attempt at the) concrete presheaf model
+producing humongous inequational Agda terms in composite
+equations/diagrams.
 
 What we currently have:
 
@@ -133,10 +133,7 @@ What we currently do not have:
   * `Semantics/Renamings/Properties/env-⟨⟩-ᶜ-ren-naturality.agda` runs
     into the problem with `with`-abstractions producing ill-typed
     Agda-terms.
-    
-  * `Semantics/Renamings/Properties/env-⟨⟩-ᶜ-split-env-naturality.agda`
-    is postulated for time.
-    
+        
   * `Semantics/Renamings/Properties/var-not-in-ctx-after-ᶜ-wk-ren.agda`
     runs into the `with`-abstraction problem, but has the corresponding
     cases proved manually as separate auxiliary lemmas.
