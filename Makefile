@@ -8,3 +8,5 @@ time:
 
 clean:
 	git clean -fx
+
+.PHONY: default all time clean
