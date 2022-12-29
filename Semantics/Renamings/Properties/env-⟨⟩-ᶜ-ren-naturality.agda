@@ -1074,25 +1074,41 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (⟨⟩-≤-ren {τ' = τ''} 
     ∘ᵐ μ
     ∘ᵐ ⟨⟩-≤ q
     ∘ᵐ ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+  ≡⟨ ∘ᵐ-congʳ (trans (sym (∘ᵐ-assoc _ _ _)) (trans (∘ᵐ-congˡ (sym (⟨⟩-μ-≤₁ _))) (∘ᵐ-assoc _ _ _))) ⟩
+       ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
+    ∘ᵐ ⟨⟩-≤ (+-monoˡ-≤ (suc τ ∸ τ') q)
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+  ≡⟨ trans (sym (∘ᵐ-assoc _ _ _)) (∘ᵐ-congˡ (⟨⟩-≤-trans _ _)) ⟩
+       ⟨⟩-≤ (≤-trans (m≤n+m∸n (suc τ) τ') (+-monoˡ-≤ (suc τ ∸ τ') q))
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+  ≡⟨ ∘ᵐ-congˡ (cong ⟨⟩-≤ (≤-irrelevant _ _)) ⟩
+       ⟨⟩-≤ (≤-trans (m≤n+m∸n (suc τ) τ'') (+-monoʳ-≤ τ'' (∸-monoʳ-≤ (suc τ) q)))
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+  ≡⟨ trans (∘ᵐ-congˡ (sym (⟨⟩-≤-trans _ _))) (∘ᵐ-assoc _ _ _) ⟩
+       ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
+    ∘ᵐ ⟨⟩-≤ (+-monoʳ-≤ τ'' (∸-monoʳ-≤ (suc τ) q))
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+  ≡⟨ ∘ᵐ-congʳ (trans (sym (∘ᵐ-assoc _ _ _)) (trans (∘ᵐ-congˡ (⟨⟩-μ-≤₂ _)) (∘ᵐ-assoc _ _ _))) ⟩
+       ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (⟨⟩-≤ (∸-monoʳ-≤ (suc τ) q))
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (sym (⟨⟩-∘ᵐ _ _))) ⟩
+       ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (   ⟨⟩-≤ (∸-monoʳ-≤ (suc τ) q)
+                 ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ≡⟨ {!!} ⟩
        ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ'' ⟩ᶠ (   ⟨ suc τ ∸ τ'' ⟩ᶠ (   ⟦ eq-ren (cong (_-ᶜ_ Γ) (sym (m+n∸m≡n (suc τ ∸ τ'') (suc τ ∸ τ')))) ⟧ʳ
-                                      ∘ᵐ ⟦ eq-ren (cong (_-ᶜ_ Γ) (+-∸-assoc (suc τ ∸ τ'') (∸-monoʳ-≤ (suc τ) q))) ⟧ʳ
-                                      ∘ᵐ ⟦ eq-ren (++ᶜ-ᶜ-+ {Γ} {suc τ ∸ τ''}) ⟧ʳ
-                                      ∘ᵐ ε-⟨⟩
-                                      ∘ᵐ env-⟨⟩-ᶜ
-                                           (suc τ ∸ τ' ∸ (suc τ ∸ τ''))
-                                           (≤-trans
-                                             (∸-monoˡ-≤ (suc τ ∸ τ'')
-                                               (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m _ τ'))))
-                                             (≤-reflexive (sym (ctx-time-ᶜ {Γ} {suc τ ∸ τ''}
-                                               (≤-trans (∸-monoˡ-≤ τ'' p)
-                                                 (≤-trans (∸-monoˡ-≤ τ'' (+-monoʳ-≤ (ctx-time Γ) q)) (≤-reflexive (m+n∸n≡m _ τ'')))))))))
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (   {!!}
                  ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ'')
-                      (≤-trans (∸-monoˡ-≤ τ'' (≤-trans p (+-mono-≤ (≤-reflexive refl) q))) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ''))))
-  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (cong ⟨ τ'' ⟩ᶠ (∘ᵐ-congˡ (cong ⟨ suc τ ∸ τ'' ⟩ᶠ
-      (∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-congʳ (sym (⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ _))))))))) ⟩
+                      (≤-trans (∸-monoˡ-≤ τ'' (≤-trans p (+-monoʳ-≤ (ctx-time Γ) q))) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ''))))
+  ≡⟨⟩
        ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
     ∘ᵐ μ
     ∘ᵐ ⟨ τ'' ⟩ᶠ (   ⟨ suc τ ∸ τ'' ⟩ᶠ (   ⟦ eq-ren (cong (_-ᶜ_ Γ) (sym (m+n∸m≡n (suc τ ∸ τ'') (suc τ ∸ τ')))) ⟧ʳ
