@@ -798,10 +798,10 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-
     ∘ᵐ μ⁻¹
     ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n r))
   ∎
-env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | yes q | no ¬r = {!!} -- doing `with suc τ ∸ τ''` generates an ill-typed term
+env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | yes q | no ¬r = {!!} -- doing `with suc τ ∸ τ''` here generates an ill-typed Agda term
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | no ¬q | yes r =
   ⊥-elim (n≤k⇒¬n≤m+k-contradiction r ¬q)
-env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | no ¬q | no ¬r = {!!} -- doing `with suc τ ∸ τ''` generates an ill-typed term
+env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | no ¬q | no ¬r = {!!} -- doing `with suc τ ∸ τ''` here generates an ill-typed Agda term
 
 env-⟨⟩-ᶜ-ren-nat {.(_ ⟨ _ ⟩) ⟨ τ' ⟩} (suc τ) p ⟨⟩-μ⁻¹-ren = {!!} -- this case is analogous to `⟨⟩-μ-ren`, including generated ill-typed `with` terms, thus omitting for now
 

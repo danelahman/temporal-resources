@@ -132,6 +132,9 @@ What we currently do not have:
   * `Semantics/Renamings/Properties/env-⟨⟩-ᶜ-ren-naturality.agda` runs
     into the problem with `with`-abstractions producing ill-typed
     Agda-terms.
+    
+  * `Semantics.Renamings.Properties.env-⟨⟩-ᶜ-⟨⟩-≤.agda` runs into the
+    problem with `with`-abstractions producing ill-typed Agda-terms.
         
   * `Semantics/Renamings/Properties/var-not-in-ctx-after-ᶜ-wk-ren.agda`
     runs into the `with`-abstraction problem, but has the corresponding
