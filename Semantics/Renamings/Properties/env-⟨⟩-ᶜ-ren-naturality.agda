@@ -1,3 +1,9 @@
+{-# OPTIONS --allow-unsolved-metas #-}
+
+-- Due to the eta-contraction bug leading to Agda generating
+-- ill-typed `with` terms there are some unfilled holes below.
+
+
 -------------------------------------------------------
 -- Naturality of the minus operation on environments --
 -------------------------------------------------------
@@ -19,6 +25,7 @@ open import Semantics.Interpretation Mod
 open import Semantics.Renamings Mod
 
 open import Semantics.Renamings.Properties.-ᶜ-wk-ren-decompose Mod
+open import Semantics.Renamings.Properties.env-⟨⟩-ᶜ-⟨⟩-≤ Mod
 
 open import Util.Equality
 open import Util.Operations
@@ -30,7 +37,7 @@ env-⟨⟩-ᶜ-ren-nat : ∀ {Γ Γ' A}
                  → (τ : Time)
                  → (p : τ ≤ ctx-time Γ)
                  → (ρ : Ren Γ Γ')
-                 →    env-⟨⟩-ᶜ {Γ} τ p 
+                 →    env-⟨⟩-ᶜ {Γ} τ p
                    ∘ᵐ ⟦ ρ ⟧ʳ {A}
                  ≡    ⟨ τ ⟩ᶠ ⟦ ρ -ʳ τ ⟧ʳ
                    ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ))
@@ -144,8 +151,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ∷ A} {.Γ} (suc τ) p (var-ren x) =
     ∘ᵐ env-⟨⟩-ᶜ {Γ} (suc τ) (≤-trans p (≤-reflexive refl))
   ∎
 env-⟨⟩-ᶜ-ren-nat {Γ ∷ A} {.((Γ ∷ A) ⟨ 0 ⟩)} (suc τ) p ⟨⟩-η⁻¹-ren =
-  {!!}
-  {-
   begin
        env-⟨⟩-ᶜ {Γ ∷ A} (suc τ) p
     ∘ᵐ η⁻¹
@@ -228,7 +233,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ∷ A} {.((Γ ∷ A) ⟨ 0 ⟩)} (suc τ) p ⟨⟩-η
        ⟨ suc τ ⟩ᶠ idᵐ
     ∘ᵐ env-⟨⟩-ᶜ {(Γ ∷ A) ⟨ 0 ⟩} (suc τ) (≤-trans p (≤-reflexive (sym (+-identityʳ (ctx-time Γ)))))
   ∎
-  -}
 env-⟨⟩-ᶜ-ren-nat {Γ ∷ A} {.(_ ∷ A)} (suc τ) p (cong-∷-ren {Γ' = Γ'} ρ) =
   begin
        (   env-⟨⟩-ᶜ {Γ} (suc τ) p
@@ -280,8 +284,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} {A = A} (suc τ) p id-ren with suc τ �
     ∘ᵐ ⟨⟩-≤ {⟦ Γ ⟧ᵉᵒ A} (≤-reflexive (m+[n∸m]≡n q))
   ∎
 ... | no ¬q =
-  {!!}
-  {-
   begin
          (   ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
           ∘ᵐ μ {⟦ Γ -ᶜ (suc τ ∸ τ') ⟧ᵉᵒ A}
@@ -316,10 +318,7 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} {A = A} (suc τ) p id-ren with suc τ �
                    (≤-trans (∸-monoˡ-≤ τ' (≤-trans p (≤-reflexive refl)))
                     (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ∎
-  -}
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (_∘ʳ_ {Γ' = Γ'} {Γ'' = Γ''} ρ ρ') =
-  {!!}
-  {-
   begin
        env-⟨⟩-ᶜ {Γ ⟨ τ' ⟩} (suc τ) p
     ∘ᵐ ⟦ ρ ∘ʳ ρ' ⟧ʳ
@@ -359,7 +358,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (_∘ʳ_ {Γ' = Γ'} {Γ'' = 
        ⟨ suc τ ⟩ᶠ ⟦ ρ -ʳ suc τ ∘ʳ ρ' -ʳ suc τ ⟧ʳ
     ∘ᵐ env-⟨⟩-ᶜ  {Γ''} (suc τ) (≤-trans p (≤-trans (ren-≤-ctx-time ρ') (ren-≤-ctx-time ρ)))
   ∎
-  -}
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} {A = A} (suc τ) p wk-ren with suc τ ≤? τ'
 ... | yes q =
   begin
@@ -411,8 +409,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} {A = A} (suc τ) p wk-ren with suc τ �
     ∘ᵐ fstᵐ
   ∎
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .0 ⟩} {A = A} (suc τ) p ⟨⟩-η-ren =
-  {!!}
-  {-
   begin
        (   ⟨⟩-≤ {⟦ Γ -ᶜ suc τ ⟧ᵉᵒ A} ≤-refl
         ∘ᵐ μ {⟦ Γ -ᶜ suc τ ⟧ᵉᵒ A}
@@ -454,11 +450,8 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .0 ⟩} {A = A} (suc τ) p ⟨⟩-η-ren =
     ∘ᵐ env-⟨⟩-ᶜ {Γ} (suc τ)
          (≤-trans p (≤-reflexive (+-identityʳ (ctx-time Γ))))
   ∎
-  -}
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p ⟨⟩-η⁻¹-ren with suc τ ≤? τ'
 ... | yes q =
-  {!!}
-  {-
   begin
        (   μ⁻¹
         ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n q)))
@@ -531,10 +524,7 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p ⟨⟩-η⁻¹-ren with suc �
     ∘ᵐ μ
     ∘ᵐ ⟨ 0 ⟩ᶠ (μ⁻¹ ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n q)))
   ∎
-  -}
 ... | no ¬q =
-  {!!}
-  {-
   begin
        (   ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
         ∘ᵐ μ
@@ -730,7 +720,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p ⟨⟩-η⁻¹-ren with suc �
                                   (≤-reflexive _)))
                               (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ')))))
   ∎
-  -}
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) with suc τ ≤? τ' + τ'' | suc τ ≤? τ''
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | yes q | yes r =
   begin
@@ -814,12 +803,10 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-
   ⊥-elim (n≤k⇒¬n≤m+k-contradiction r ¬q)
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ .(τ' + τ'') ⟩} {A = A} (suc τ) p (⟨⟩-μ-ren {τ = τ'} {τ' = τ''}) | no ¬q | no ¬r = {!!} -- doing `with suc τ ∸ τ''` generates an ill-typed term
 
-env-⟨⟩-ᶜ-ren-nat {.(_ ⟨ _ ⟩) ⟨ τ' ⟩} (suc τ) p ⟨⟩-μ⁻¹-ren = {!!}
+env-⟨⟩-ᶜ-ren-nat {.(_ ⟨ _ ⟩) ⟨ τ' ⟩} (suc τ) p ⟨⟩-μ⁻¹-ren = {!!} -- this case is analogous to `⟨⟩-μ-ren`, including generated ill-typed `with` terms, thus omitting for now
 
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (⟨⟩-≤-ren {τ' = τ''} q) with suc τ ≤? τ' | suc τ ≤? τ''
 ... | yes r | yes s =
-  {!!}
-  {-
   begin
        (   μ⁻¹
         ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n r)))
@@ -851,12 +838,9 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (⟨⟩-≤-ren {τ' = τ''} 
     ∘ᵐ μ⁻¹
     ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n s))
   ∎
-  -}
 ... | yes r | no ¬s =
   ⊥-elim (¬s (≤-trans r q))
 ... | no ¬r | yes s =
-  {!!}
-  {-
   begin
        (   ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
         ∘ᵐ μ
@@ -1057,7 +1041,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (⟨⟩-≤-ren {τ' = τ''} 
     ∘ᵐ μ⁻¹
     ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n s))
   ∎
-  -}
 ... | no ¬r | no ¬s =
   begin
        (   ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
@@ -1102,10 +1085,18 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (⟨⟩-≤-ren {τ' = τ''} 
     ∘ᵐ μ
     ∘ᵐ ⟨ τ'' ⟩ᶠ (   ⟨⟩-≤ (∸-monoʳ-≤ (suc τ) q)
                  ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
-  ≡⟨ {!!} ⟩
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (cong ⟨ τ'' ⟩ᶠ (env-⟨⟩-ᶜ-⟨⟩-≤ _ _))) ⟩
        ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ'' ⟩ᶠ (   {!!}
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (   ⟨ suc τ ∸ τ'' ⟩ᶠ ⟦ -ᶜ-≤-ren {Γ} {suc τ ∸ τ''} {suc τ ∸ τ'} (∸-monoʳ-≤ (suc τ) q) ⟧ʳ
+                 ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ'')
+                      (≤-trans
+                        (∸-monoʳ-≤ (suc τ) q)
+                        (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ')))))
+  ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (cong ⟨ τ'' ⟩ᶠ (∘ᵐ-congʳ (cong (env-⟨⟩-ᶜ (suc τ ∸ τ'')) (≤-irrelevant _ _))))) ⟩
+       ⟨⟩-≤ (m≤n+m∸n (suc τ) τ'')
+    ∘ᵐ μ
+    ∘ᵐ ⟨ τ'' ⟩ᶠ (   ⟨ suc τ ∸ τ'' ⟩ᶠ ⟦ -ᶜ-≤-ren {Γ} {suc τ ∸ τ''} {suc τ ∸ τ'} (∸-monoʳ-≤ (suc τ) q) ⟧ʳ
                  ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ'')
                       (≤-trans (∸-monoˡ-≤ τ'' (≤-trans p (+-monoʳ-≤ (ctx-time Γ) q))) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ''))))
   ≡⟨⟩
@@ -1147,8 +1138,6 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (⟨⟩-≤-ren {τ' = τ''} 
   ∎
 env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (cong-⟨⟩-ren {Γ' = Γ'} ρ) with suc τ ≤? τ'
 ... | yes q =
-  {!!}
-  {-
   begin
        (   μ⁻¹
         ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n q)))
@@ -1167,10 +1156,7 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (cong-⟨⟩-ren {Γ' = Γ'} 
     ∘ᵐ μ⁻¹
     ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n q))
   ∎
-  -}
 ... | no ¬q =
-  {!!}
-  {-
   begin
        (   ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
         ∘ᵐ μ
@@ -1217,5 +1203,4 @@ env-⟨⟩-ᶜ-ren-nat {Γ ⟨ τ' ⟩} (suc τ) p (cong-⟨⟩-ren {Γ' = Γ'} 
     ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ'
                  (≤-trans p (+-mono-≤ (ren-≤-ctx-time ρ) (≤-reflexive refl)))) (≤-reflexive (m+n∸n≡m (ctx-time Γ') τ'))))
   ∎
-  -}
 
