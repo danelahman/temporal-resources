@@ -259,3 +259,26 @@ infixl 30 _-ᶜ_
     (cong (λ τ → Γ -ᶜ τ) {suc (τ₁ + suc τ₂) ∸ τ} {suc τ₁ ∸ τ + suc τ₂}
       (+-∸-comm {suc τ₁} (suc τ₂) {τ} (<⇒≤ (≰⇒> ¬p))))
     (++ᶜ-ᶜ-+ {Γ} {suc τ₁ ∸ τ} {suc τ₂})
+
+ctx-time-ᶜ : ∀ {Γ τ}
+           → (p : τ ≤ ctx-time Γ)
+           → ctx-time (Γ -ᶜ τ) ≡ ctx-time Γ ∸ τ
+ctx-time-ᶜ {Γ} {zero} p =
+  refl
+ctx-time-ᶜ {[]} {suc τ} p =
+  refl
+ctx-time-ᶜ {Γ ∷ A} {suc τ} p =
+  ctx-time-ᶜ {Γ} {suc τ} p
+ctx-time-ᶜ {Γ ⟨ τ' ⟩} {suc τ} p with suc τ ≤? τ'
+... | yes q =
+  sym (+-∸-assoc (ctx-time Γ) q)
+... | no ¬q =
+  trans
+    (ctx-time-ᶜ {Γ} {suc τ ∸ τ'}
+      (≤-trans
+        (∸-monoˡ-≤ τ' p)
+        (≤-reflexive (m+n∸n≡m _ τ'))))
+    (sym (¬k≤m⇒k∸m≤n⇒n+m∸k≤n∸k∸m ¬q
+      (≤-trans
+        (∸-monoˡ-≤ τ' p)
+        (≤-reflexive (m+n∸n≡m _ τ')))))
