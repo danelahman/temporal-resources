@@ -7,6 +7,6 @@ time:
 	time agda Everything.agda
 
 clean:
-	git clean -fx
+	find . -type f -name "*.agdai" -delete
 
 .PHONY: default all time clean
