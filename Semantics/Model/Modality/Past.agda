@@ -1,11 +1,11 @@
--------------------------------------------------------------------
--- Semantics of the past modality `Γ ⟨ t ⟩` as a strong monoidal --
--- functor indexed by (ℕ,≥). It is the analogue of the monadic   --
--- ◆-modality on contexts in Fitch-style modal lambda calculi.   --
---                                                               --
--- Note: While `Γ ⟨ t ⟩` is a strong monoidal functor, below we  --
--- use the terminology (unit, multiplication) of graded monads.  --
--------------------------------------------------------------------
+--------------------------------------------------------------------
+-- Semantics of the past modality `Γ ⟨ t ⟩` as a strong monoidal  --
+-- functor indexed by (ℕ,≥). It is the analogue of the monadic    --
+-- lock-modality on contexts in Fitch-style modal lambda calculi. --
+--                                                                --
+-- Note: While `Γ ⟨ t ⟩` is a strong monoidal functor, below we   --
+-- use the terminology (unit, multiplication) of graded monads.   --
+--------------------------------------------------------------------
 
 open import Semantics.Model.Category
 

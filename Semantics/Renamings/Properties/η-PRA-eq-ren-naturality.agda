@@ -1,5 +1,5 @@
 -------------------------------------------------------
--- Naturality of the minus operation on environments --
+-- Naturality of the PRA unit wrt equality renamings --
 -------------------------------------------------------
 
 open import Semantics.Model

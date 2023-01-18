@@ -3,9 +3,9 @@
 -- Due to the eta-contraction bug leading to Agda generating
 -- ill-typed `with` terms there are some unfilled holes below.
 
--------------------------------------------------------------------------------
--- The minus operation on environments interaction with monotonicity in time --
--------------------------------------------------------------------------------
+--------------------------------------------------------------
+-- Composition of the PRA unit with the monotonicity of ⟨-⟩ --
+--------------------------------------------------------------
 
 open import Semantics.Model
 

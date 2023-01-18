@@ -1,6 +1,6 @@
-----------------------------------------
--- Interpretation of well-typed terms --
-----------------------------------------
+---------------------------------------
+-- Interpretation of types and terms --
+---------------------------------------
 
 open import Semantics.Model
 

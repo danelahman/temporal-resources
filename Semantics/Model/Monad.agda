@@ -1,6 +1,6 @@
-------------------------------------------------------------
--- Strong graded monad equipped with algebraic operations --
-------------------------------------------------------------
+----------------------------------------------------------------
+-- [-]-strong graded monad equipped with algebraic operations --
+----------------------------------------------------------------
 
 -- Note: A version of the monad that is not quotioned by
 --       the delay equations (see them in EquationalTheory)

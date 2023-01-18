@@ -1,6 +1,6 @@
--------------------------------------------------------------------------
--- Environment splitting morphisms interaction with equality renamings --
--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+-- Environment splitting morphisms' interaction with equality renamings --
+--------------------------------------------------------------------------
 
 open import Semantics.Model
 

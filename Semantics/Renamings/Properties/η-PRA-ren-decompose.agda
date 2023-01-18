@@ -1,6 +1,6 @@
----------------------------------------------------
--- Semantics of context minus weakening renaming --
----------------------------------------------------
+----------------------------------------
+-- Semantics of the PRA unit renaming --
+----------------------------------------
 
 open import Semantics.Model
 

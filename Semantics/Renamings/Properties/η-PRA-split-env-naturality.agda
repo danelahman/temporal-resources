@@ -1,6 +1,6 @@
--------------------------------------------------------
--- Naturality of the minus operation on environments --
--------------------------------------------------------
+----------------------------------------------------------
+-- Naturality of the PRA unit wrt environment splitting --
+----------------------------------------------------------
 
 open import Semantics.Model
 

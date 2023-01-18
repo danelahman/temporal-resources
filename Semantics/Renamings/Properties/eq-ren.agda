@@ -1,6 +1,6 @@
-------------------------
--- Equality renamings --
-------------------------
+-------------------------------------
+-- Semantics of equality renamings --
+-------------------------------------
 
 open import Semantics.Model
 

@@ -1,6 +1,6 @@
---------------------------------------------------------------------------
--- Environment splitting morphisms interaction with weakening renamings --
---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+-- Environment splitting morphisms' interaction with weakening renamings --
+---------------------------------------------------------------------------
 
 open import Semantics.Model
 

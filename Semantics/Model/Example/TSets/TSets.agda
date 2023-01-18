@@ -1,6 +1,6 @@
 --------------------------------------------------------
 -- Time-indexed presheaves (indexed by (ℕ,≤)), their, --
--- morphisms, and basic other categorical structures  --
+-- morphisms, and other basic categorical structures  --
 --------------------------------------------------------
 
 module Semantics.Model.Example.TSets.TSets where

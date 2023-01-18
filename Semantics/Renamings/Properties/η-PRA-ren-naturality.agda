@@ -3,10 +3,9 @@
 -- Due to the eta-contraction bug leading to Agda generating
 -- ill-typed `with` terms there are some unfilled holes below.
 
-
--------------------------------------------------------
--- Naturality of the minus operation on environments --
--------------------------------------------------------
+--------------------------------
+-- Naturality of the PRA unit --
+--------------------------------
 
 open import Semantics.Model
 

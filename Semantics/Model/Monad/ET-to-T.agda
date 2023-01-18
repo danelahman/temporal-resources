@@ -1,6 +1,6 @@
------------------------------------------------------------------------------
--- Strong (via enrichment) graded monad equipped with algebraic operations --
------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+-- [-]-strong (via enrichment) graded monad equipped with algebraic operations --
+---------------------------------------------------------------------------------
 
 open import Semantics.Model.Category
 open import Semantics.Model.Modality.Future

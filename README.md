@@ -129,11 +129,11 @@ What we currently do not have:
 * In `Semantics/`, some of the auxiliary lemmas used in the high-level
   proofs are currently partially finished, specifically:
   
-  * `Semantics/Renamings/Properties/env-⟨⟩-ᶜ-ren-naturality.agda` runs
+  * `Semantics/Renamings/Properties/η-PRA-ren-naturality.agda` runs
     into the problem with `with`-abstractions producing ill-typed
     Agda-terms.
     
-  * `Semantics.Renamings.Properties.env-⟨⟩-ᶜ-⟨⟩-≤.agda` runs into the
+  * `Semantics.Renamings.Properties.η-PRA-⟨⟩-≤.agda` runs into the
     problem with `with`-abstractions producing ill-typed Agda-terms.
         
   * `Semantics/Renamings/Properties/var-not-in-ctx-after-ᶜ-wk-ren.agda`
