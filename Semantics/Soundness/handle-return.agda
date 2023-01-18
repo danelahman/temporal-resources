@@ -17,7 +17,6 @@ open import Semantics.Interpretation Mod
 
 open import Semantics.Renamings Mod
 open import Semantics.Renamings.Properties.VC-rename Mod
-open import Semantics.Renamings.Properties.-ᶜ-⟨⟩-ren-decompose Mod
 
 open import Semantics.Substitutions.Properties.VC-subst Mod
 

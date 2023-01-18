@@ -375,7 +375,7 @@ mutual
                → (N : Γ ∷ A ⊢C⦂ C)
                -----------------------------------------------
                → Γ ⊢C⦂ unbox p (box V) N
-                   == (N [ Hd ↦ V-rename (-ᶜ-⟨⟩-ren τ p) V ]c)
+                   == (N [ Hd ↦ V-rename (η-PRA-ren τ p) V ]c)
 
     -- eta equation for boxing-unboxing
 

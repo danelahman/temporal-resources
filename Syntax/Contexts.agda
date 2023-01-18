@@ -16,15 +16,17 @@ open import Util.Equality
 open import Util.Operations
 open import Util.Time
 
--- Structured contexts
+-- Temporal contexts
 
 data Ctx : Set where
   []   : Ctx                       -- empty context
   _∷_  : Ctx → VType → Ctx         -- context extension with a variable
-  _⟨_⟩ : Ctx → Time → Ctx          -- using context after time-passage
+  _⟨_⟩ : Ctx → Time → Ctx          -- applicaiton of context modality
 
 infixl 31 _∷_
 infix  32 _⟨_⟩
+
+-- Context extension and context modality application are injective
 
 ∷ᶜ-injective : ∀ {Γ Γ' A} → Γ ∷ A ≡ Γ' ∷ A → Γ ≡ Γ'
 ∷ᶜ-injective refl = refl
@@ -67,6 +69,7 @@ ctx-time (Γ ⟨ τ ⟩) = ctx-time Γ + τ
 
 ctx-time-++ᶜ : (Γ Γ' : Ctx)
               → ctx-time (Γ ++ᶜ Γ') ≡ ctx-time Γ + ctx-time Γ'
+              
 ctx-time-++ᶜ Γ []         = sym (+-identityʳ (ctx-time Γ))
 ctx-time-++ᶜ Γ (Γ' ∷ A)   = ctx-time-++ᶜ Γ Γ'
 ctx-time-++ᶜ Γ (Γ' ⟨ τ ⟩) = trans
@@ -74,6 +77,8 @@ ctx-time-++ᶜ Γ (Γ' ⟨ τ ⟩) = trans
                                (+-assoc (ctx-time Γ) (ctx-time Γ') τ)
 
 -- Proof that sub-contexts split a given context
+--
+-- We use this to better structure some proofs about contexts and renamings
 
 data _,_split_ : (Γ Γ' Γ'' : Ctx) → Set where
   split-[] : ∀ {Γ} → Γ , [] split Γ
@@ -95,7 +100,10 @@ split-≡ (split-⟨⟩ p) = cong (_⟨ _ ⟩) (split-≡ p)
 split-≡-++ᶜ : ∀ {Γ₁ Γ₂} → Γ₁ , Γ₂ split (Γ₁ ++ᶜ Γ₂)
 split-≡-++ᶜ = ≡-split refl
 
--- Variable in a context (under τ-amount of time-passage)
+-- Variable in a context
+--
+-- The τ in x : A ∈[ τ ] Γ models that after x was brought
+-- into scope, additional τ time units have passed
 
 data _∈[_]_ (A : VType) : Time → Ctx → Set where
   Hd    : ∀ {Γ}      → A ∈[ 0 ] Γ ∷ A
@@ -190,7 +198,13 @@ var-in-split {Γ₁ = Γ₁} {Γ₂ = Γ₂ ⟨ τ ⟩} {A = A}
 ... | inj₂ (y , q , r) =
   inj₂ (Tl-⟨⟩ y , q , cong (_⟨ τ ⟩) r)
 
--- Temporal minus operation on contexts
+-- "Time-travelling" operation on contexts
+--
+-- When restricted to τs with τ ≤ ctx-time Γ, one can see that the
+-- context modality (-) ⟨ τ ⟩ is a parametric right adjoint (PRA) to
+-- (-) -ᶜ τ akin to Gratzer et al in https://doi.org/10.1145/3514241
+--
+-- In our language we witness the PRA situation in Renamings.agda
 
 _-ᶜ_ : Ctx → Time → Ctx
 Γ        -ᶜ zero  = Γ
@@ -201,6 +215,9 @@ _-ᶜ_ : Ctx → Time → Ctx
 ... | no ¬p = Γ -ᶜ (suc τ ∸ τ')
 
 infixl 30 _-ᶜ_
+
+-- Interaction between the time-travelling operation and the monoidal
+-- structure of context concatenation
 
 -ᶜ-[]-id : ∀ {τ} → [] -ᶜ τ ≡ []
 -ᶜ-[]-id {zero} =
@@ -223,6 +240,9 @@ infixl 30 _-ᶜ_
     (≤-trans
       (∸-monoˡ-≤ τ' p)
       (≤-reflexive (m+n∸n≡m (ctx-time Γ') τ')))
+
+-- Interaction between the monoidal structure on time gradings and the
+-- time-travelling operation
 
 ++ᶜ-ᶜ-+ : ∀ {Γ τ₁ τ₂}
        → Γ -ᶜ (τ₁ + τ₂) ≡ (Γ -ᶜ τ₁) -ᶜ τ₂
@@ -259,6 +279,9 @@ infixl 30 _-ᶜ_
     (cong (λ τ → Γ -ᶜ τ) {suc (τ₁ + suc τ₂) ∸ τ} {suc τ₁ ∸ τ + suc τ₂}
       (+-∸-comm {suc τ₁} (suc τ₂) {τ} (<⇒≤ (≰⇒> ¬p))))
     (++ᶜ-ᶜ-+ {Γ} {suc τ₁ ∸ τ} {suc τ₂})
+
+-- Interaction between the time-travelling operation and the time
+-- captured by a given context
 
 ctx-time-ᶜ : ∀ {Γ τ}
            → (p : τ ≤ ctx-time Γ)

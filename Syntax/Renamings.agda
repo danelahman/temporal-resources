@@ -21,9 +21,15 @@ open import Syntax.Language
 open import Util.Equality
 open import Util.Time
 
--- Variable renamings (as the least relation closed under
--- identities, composition, ordinary variable renamings,
--- and graded monad operations for the ⟨_⟩ modality).
+-- Variable renamings (as the smallest relation closed under
+-- identities, composition, congruences, ordinary variable 
+-- renamings, and strong monoidal functor sturcture for ⟨_⟩)
+--
+-- Note: For certain conveniences (such as the reading of ρ : Ren Γ Γ'
+-- as mapping variables in Γ to variables in Γ'), we define Ren in an
+-- opposite direction to how they sometimes appear in the literature.
+-- In other words, you should read Ren Γ Γ' as the hom-set of the
+-- opposite of the category of contexts and renamings between them.
 
 data Ren : Ctx → Ctx → Set where
   -- identity renaming
@@ -70,10 +76,15 @@ wk-ctx-ren {Γ' = []}       = id-ren
 wk-ctx-ren {Γ' = Γ' ∷ A}   = wk-ren ∘ʳ wk-ctx-ren
 wk-ctx-ren {Γ' = Γ' ⟨ τ ⟩} = wk-⟨⟩-ren ∘ʳ wk-ctx-ren
 
--- Exchange renamings
+-- Variable exchange renaming
 
 exch-ren : ∀ {Γ A B} → Ren (Γ ∷ A ∷ B) (Γ ∷ B ∷ A)
 exch-ren = extend-ren (extend-ren wk-ctx-ren Hd) (Tl-∷ Hd)
+
+-- Variables and modality exchange renaming
+--
+-- This renaming corresponds to all types being monotone with respect
+-- to time, meaning that they can always be moved to the future.
 
 exch-⟨⟩-var-ren : ∀ {Γ A τ} → Ren (Γ ⟨ τ ⟩ ∷ A) ((Γ ∷ A) ⟨ τ ⟩)
 exch-⟨⟩-var-ren {A = A} {τ = τ} =
@@ -120,22 +131,35 @@ ren-≤-ctx-time (cong-⟨⟩-ren {τ = τ} ρ) =
   +-monoˡ-≤ τ (ren-≤-ctx-time ρ)
 
 -- Interaction between the time-travelling operation on contexts and the ⟨_⟩ modality
+--
+-- As noted in Contexts.agda. These renamings witness that the context
+-- modality (-) ⟨ τ ⟩ is a parametric right adjoint (PRA) to (-) -ᶜ τ
 
--ᶜ-⟨⟩-ren : ∀ {Γ} → (τ : Time) → (τ ≤ ctx-time Γ) → Ren ((Γ -ᶜ τ) ⟨ τ ⟩) Γ
--ᶜ-⟨⟩-ren {Γ} zero p =
+η-PRA-ren : ∀ {Γ} → (τ : Time) → (τ ≤ ctx-time Γ) → Ren ((Γ -ᶜ τ) ⟨ τ ⟩) Γ
+η-PRA-ren {Γ} zero p =
   ⟨⟩-η-ren
--ᶜ-⟨⟩-ren {Γ ∷ A} (suc τ) p =
+η-PRA-ren {Γ ∷ A} (suc τ) p =
      wk-ren
-  ∘ʳ -ᶜ-⟨⟩-ren (suc τ) p
--ᶜ-⟨⟩-ren {Γ ⟨ τ' ⟩} (suc τ) p with suc τ ≤? τ'
+  ∘ʳ η-PRA-ren (suc τ) p
+η-PRA-ren {Γ ⟨ τ' ⟩} (suc τ) p with suc τ ≤? τ'
 ... | yes q =
      ⟨⟩-≤-ren (≤-reflexive (m∸n+n≡m q))
   ∘ʳ ⟨⟩-μ⁻¹-ren
 ... | no ¬q =
-     cong-⟨⟩-ren (-ᶜ-⟨⟩-ren {Γ} (suc τ ∸ τ')
+     cong-⟨⟩-ren (η-PRA-ren {Γ} (suc τ ∸ τ')
                    (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m _ τ'))))
   ∘ʳ ⟨⟩-μ-ren
   ∘ʳ ⟨⟩-≤-ren (≤-reflexive (sym (m∸n+n≡m {suc τ} {τ'} (≰⇒≥ ¬q))))
+
+ε-PRA-ren : ∀ {Γ} → (τ : Time) → Ren Γ (Γ ⟨ τ ⟩ -ᶜ τ)
+ε-PRA-ren {Γ} zero =
+  ⟨⟩-η⁻¹-ren
+ε-PRA-ren {Γ} (suc τ) with suc τ ≤? suc τ
+... | yes p =
+  ⟨⟩-≤-ren (≤-reflexive (sym (n∸n≡0 τ))) ∘ʳ
+  ⟨⟩-η⁻¹-ren
+... | no ¬p =
+  ⊥-elim (¬p ≤-refl)
 
 -- Weakening renaming for the time-travelling operation on contexts
 
@@ -161,7 +185,7 @@ ren-≤-ctx-time (cong-⟨⟩-ren {τ = τ} ρ) =
      ∘ʳ eq-ren (cong (Γ -ᶜ_) (+-∸-assoc τ₁ {τ₂} {τ₁} p)))
   ∘ʳ eq-ren (cong (Γ -ᶜ_) (sym (m+n∸m≡n τ₁ τ₂)))
 
--- Time-travelling operation on renamings
+-- "Time-travelling" operation on renamings
 
 _-ʳ_ : ∀ {Γ Γ'} → Ren Γ Γ' → (τ : Time) → Ren (Γ -ᶜ τ) (Γ' -ᶜ τ)
 ρ             -ʳ zero  = ρ
@@ -230,8 +254,8 @@ cong-⟨⟩-ren {τ = τ'} ρ  -ʳ suc τ with suc τ ≤? τ'
 
 infixl 30 _-ʳ_
 
--- Action of renamings on variables (showing that reamings
--- allow one to move any variable under more ⟨_⟩ modalities)
+-- Action of renamings on variables (showing that reamings allow one
+-- to move any variable under more ⟨_⟩ modalities)
 
 var-rename : ∀ {Γ Γ'}
            → Ren Γ Γ'

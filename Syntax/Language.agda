@@ -108,7 +108,7 @@ mutual
             -------------
             → Γ ⊢C⦂ C
 
-    -- performing algebraic operations
+    -- performing algebraic effects
 
     perform : {A : VType}
             → {τ : Time}
@@ -141,7 +141,7 @@ mutual
             --------------------------------------------------
             → Γ ⊢C⦂ B ‼ (τ + τ')
 
-    -- unboxing a boxed value/resource after enough time has passed for it to be ready
+    -- unboxing a boxed value/resource after enough time has passed for it to be usable
 
     unbox   : {A : VType}
             → {C : CType}
