@@ -113,4 +113,4 @@ open import Semantics.Model.Example.TSets.Monad.Handling.Properties.Delay
 -- TODO: commented out because extremely slow typechecking (see README)
 
 -- open import Semantics.Model.Example.TSets.Monad
--- open import Semantics.Model.Examples.TSets.Model 
+-- open import Semantics.Model.Example.TSets.Model 
