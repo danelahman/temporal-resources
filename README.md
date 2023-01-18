@@ -133,7 +133,7 @@ What we currently do not have:
     into the problem with `with`-abstractions producing ill-typed
     Agda-terms.
     
-  * `Semantics.Renamings.Properties.η-PRA-⟨⟩-≤.agda` runs into the
+  * `Semantics/Renamings/Properties/η-PRA-⟨⟩-≤.agda` runs into the
     problem with `with`-abstractions producing ill-typed Agda-terms.
         
   * `Semantics/Renamings/Properties/var-not-in-ctx-after-ᶜ-wk-ren.agda`
