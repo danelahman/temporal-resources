@@ -163,24 +163,24 @@ ren-≤-ctx-time (cong-⟨⟩-ren {τ = τ} ρ) =
 
 -- Weakening renaming for the time-travelling operation on contexts
 
--ᶜ-wk-ren : ∀ {Γ} → (τ : Time) → Ren (Γ -ᶜ τ) Γ
--ᶜ-wk-ren {Γ} zero =
+η-ᶜ-ren : ∀ {Γ} → (τ : Time) → Ren (Γ -ᶜ τ) Γ
+η-ᶜ-ren {Γ} zero =
   id-ren
--ᶜ-wk-ren {[]} (suc τ) =
+η-ᶜ-ren {[]} (suc τ) =
   id-ren
--ᶜ-wk-ren {Γ ∷ A} (suc τ) =
-  wk-ren ∘ʳ -ᶜ-wk-ren {Γ} (suc τ)
--ᶜ-wk-ren {Γ ⟨ τ' ⟩} (suc τ) with suc τ ≤? τ'
+η-ᶜ-ren {Γ ∷ A} (suc τ) =
+  wk-ren ∘ʳ η-ᶜ-ren {Γ} (suc τ)
+η-ᶜ-ren {Γ ⟨ τ' ⟩} (suc τ) with suc τ ≤? τ'
 ... | yes p =
   ⟨⟩-≤-ren (m∸n≤m τ' (suc τ))
 ... | no ¬p =
-  wk-⟨⟩-ren ∘ʳ -ᶜ-wk-ren (suc τ ∸ τ')
+  wk-⟨⟩-ren ∘ʳ η-ᶜ-ren (suc τ ∸ τ')
 
 -- Monotonicity renaming for the time-travelling operation on contexts
 
 -ᶜ-≤-ren : ∀ {Γ τ₁ τ₂} → τ₁ ≤ τ₂ → Ren (Γ -ᶜ τ₂) (Γ -ᶜ τ₁)
 -ᶜ-≤-ren {Γ} {τ₁} {τ₂} p =
-     (  (   -ᶜ-wk-ren {Γ -ᶜ τ₁} (τ₂ ∸ τ₁)
+     (  (   η-ᶜ-ren {Γ -ᶜ τ₁} (τ₂ ∸ τ₁)
          ∘ʳ eq-ren (++ᶜ-ᶜ-+ {Γ} {τ₁} {τ₂ ∸ τ₁}))
      ∘ʳ eq-ren (cong (Γ -ᶜ_) (+-∸-assoc τ₁ {τ₂} {τ₁} p)))
   ∘ʳ eq-ren (cong (Γ -ᶜ_) (sym (m+n∸m≡n τ₁ τ₂)))
@@ -242,7 +242,7 @@ var-ren x     -ʳ suc τ = id-ren
 ... | yes q | yes r = ⟨⟩-≤-ren (∸-monoˡ-≤ (suc τ) p)
 ... | yes q | no ¬r = ⊥-elim (¬r (≤-trans q p))
 ... | no ¬q | yes r =
-  wk-⟨⟩-ren ∘ʳ -ᶜ-wk-ren (suc τ ∸ τ₁)
+  wk-⟨⟩-ren ∘ʳ η-ᶜ-ren (suc τ ∸ τ₁)
 ... | no ¬q | no ¬r =
   -ᶜ-≤-ren {τ₁ = suc τ ∸ τ₂} {τ₂ = suc τ ∸ τ₁} (∸-monoʳ-≤ (suc τ) p)
 

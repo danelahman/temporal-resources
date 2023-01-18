@@ -1,6 +1,6 @@
--------------------------------------
--- Semantics of variable renamings --
--------------------------------------
+----------------------------
+-- Semantics of renamings --
+----------------------------
 
 open import Semantics.Model
 
@@ -17,6 +17,10 @@ open import Util.Time
 open Model Mod
 
 -- Semantics of renamings as maps between environments
+--
+-- Notice the change of direction between renamings and their
+-- semantics. This is a result of the decision to present renamings
+-- in an opposite direction to their more common presentation.
 
 ⟦_⟧ʳ : ∀ {Γ Γ' : Ctx} → Ren Γ Γ' → {A : Obj} → ⟦ Γ' ⟧ᵉᵒ A →ᵐ ⟦ Γ ⟧ᵉᵒ A
 ⟦ id-ren ⟧ʳ =
@@ -41,7 +45,6 @@ open Model Mod
   mapˣᵐ ⟦ ρ ⟧ʳ idᵐ
 ⟦ cong-⟨⟩-ren {τ = τ} ρ ⟧ʳ =
   ⟨ τ ⟩ᶠ ⟦ ρ ⟧ʳ
-
 
 -- Semantics of renamings is natural
 

@@ -23,26 +23,26 @@ open import Util.Time
 
 open Model Mod
 
-⟦η-PRA-ren⟧≡env-⟨⟩-ᶜ : ∀ {Γ τ A}
+⟦η-PRA-ren⟧≡η-PRA : ∀ {Γ τ A}
                      → (p : τ ≤ ctx-time Γ)
                      → ⟦ η-PRA-ren {Γ} τ p ⟧ʳ {A}
-                     ≡ env-⟨⟩-ᶜ τ p
+                     ≡ η-PRA τ p
                        
-⟦η-PRA-ren⟧≡env-⟨⟩-ᶜ {Γ} {zero} {A} p = 
+⟦η-PRA-ren⟧≡η-PRA {Γ} {zero} {A} p = 
   begin
     η
   ≡⟨⟩
     η
   ∎
-⟦η-PRA-ren⟧≡env-⟨⟩-ᶜ {Γ ∷ B} {suc τ} {A} p = 
+⟦η-PRA-ren⟧≡η-PRA {Γ ∷ B} {suc τ} {A} p = 
   begin
        ⟦ η-PRA-ren {Γ = Γ} (suc τ) p ⟧ʳ
     ∘ᵐ fstᵐ
-  ≡⟨ ∘ᵐ-congˡ (⟦η-PRA-ren⟧≡env-⟨⟩-ᶜ {Γ} {suc τ} p) ⟩
-       env-⟨⟩-ᶜ {Γ = Γ} (suc τ) p
+  ≡⟨ ∘ᵐ-congˡ (⟦η-PRA-ren⟧≡η-PRA {Γ} {suc τ} p) ⟩
+       η-PRA {Γ = Γ} (suc τ) p
     ∘ᵐ fstᵐ
   ∎
-⟦η-PRA-ren⟧≡env-⟨⟩-ᶜ {Γ ⟨ τ' ⟩} {suc τ} {A} p with suc τ ≤? τ'
+⟦η-PRA-ren⟧≡η-PRA {Γ ⟨ τ' ⟩} {suc τ} {A} p with suc τ ≤? τ'
 ... | yes q = 
   begin
        (   μ⁻¹
@@ -68,13 +68,13 @@ open Model Mod
     ∘ᵐ μ
     ∘ᵐ ⟨ τ' ⟩ᶠ ⟦ η-PRA-ren (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))) ⟧ʳ
   ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-congʳ (cong ⟨ τ' ⟩ᶠ
-      (⟦η-PRA-ren⟧≡env-⟨⟩-ᶜ {Γ} {suc τ ∸ τ'} (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))))) ⟩
+      (⟦η-PRA-ren⟧≡η-PRA {Γ} {suc τ ∸ τ'} (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))))) ⟩
        ⟨⟩-≤ (≤-reflexive (sym (m∸n+n≡m (≰⇒≥ ¬q))))
     ∘ᵐ ⟨⟩-≤ (≤-reflexive (+-comm (suc τ ∸ τ') τ'))
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ≡⟨ trans (sym (∘ᵐ-assoc _ _ _)) (∘ᵐ-congˡ (trans (⟨⟩-≤-trans _ _) (cong ⟨⟩-≤ (≤-irrelevant _ _)))) ⟩
        ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ∎

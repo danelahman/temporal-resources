@@ -4,7 +4,7 @@
 
 open import Semantics.Model
 
-module Semantics.Renamings.Properties.-ᶜ-wk-ren-decompose (Mod : Model) where
+module Semantics.Renamings.Properties.η-ᶜ-ren-decompose (Mod : Model) where
 
 open import Data.Empty
 
@@ -23,12 +23,12 @@ open import Util.Time
 
 open Model Mod
 
-⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ : ∀ {Γ τ A}
+⟦η-ᶜ-ren⟧≡ε∘η-PRA : ∀ {Γ τ A}
                        → (p : τ ≤ ctx-time Γ)
-                       → ⟦ -ᶜ-wk-ren {Γ} τ ⟧ʳ {A}
-                       ≡ ε-⟨⟩ ∘ᵐ env-⟨⟩-ᶜ τ p
+                       → ⟦ η-ᶜ-ren {Γ} τ ⟧ʳ {A}
+                       ≡ ε-⟨⟩ ∘ᵐ η-PRA τ p
                        
-⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ {Γ} {zero} {A} p = 
+⟦η-ᶜ-ren⟧≡ε∘η-PRA {Γ} {zero} {A} p = 
   begin
     idᵐ
   ≡⟨ sym ⟨⟩-η⁻¹∘η≡id ⟩
@@ -40,19 +40,19 @@ open Model Mod
   ≡⟨ ∘ᵐ-congˡ (∘ᵐ-congʳ (cong ⟨⟩-≤ (≤-irrelevant _ _))) ⟩
     (η⁻¹ ∘ᵐ ⟨⟩-≤ z≤n) ∘ᵐ η
   ∎
-⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ {Γ ∷ B} {suc τ} {A} p = 
+⟦η-ᶜ-ren⟧≡ε∘η-PRA {Γ ∷ B} {suc τ} {A} p = 
   begin
-       ⟦ -ᶜ-wk-ren {Γ} (suc τ) ⟧ʳ
+       ⟦ η-ᶜ-ren {Γ} (suc τ) ⟧ʳ
     ∘ᵐ fstᵐ
-  ≡⟨ ∘ᵐ-congˡ (⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ {Γ} {suc τ} p) ⟩
-       (ε-⟨⟩ ∘ᵐ env-⟨⟩-ᶜ {Γ} (suc τ) p)
+  ≡⟨ ∘ᵐ-congˡ (⟦η-ᶜ-ren⟧≡ε∘η-PRA {Γ} {suc τ} p) ⟩
+       (ε-⟨⟩ ∘ᵐ η-PRA {Γ} (suc τ) p)
     ∘ᵐ fstᵐ
   ≡⟨ ∘ᵐ-assoc _ _ _ ⟩
        (η⁻¹ ∘ᵐ ⟨⟩-≤ z≤n)
-    ∘ᵐ env-⟨⟩-ᶜ {Γ} (suc τ) p
+    ∘ᵐ η-PRA {Γ} (suc τ) p
     ∘ᵐ fstᵐ
   ∎
-⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ {Γ ⟨ τ' ⟩} {suc τ} {A} p with suc τ ≤? τ'
+⟦η-ᶜ-ren⟧≡ε∘η-PRA {Γ ⟨ τ' ⟩} {suc τ} {A} p with suc τ ≤? τ'
 ... | yes q = 
   begin
     ⟨⟩-≤ (m∸n≤m τ' (suc τ))
@@ -80,32 +80,32 @@ open Model Mod
   ∎
 ... | no ¬q = 
   begin
-       ⟦ -ᶜ-wk-ren (suc τ ∸ τ') ⟧ʳ
+       ⟦ η-ᶜ-ren (suc τ ∸ τ') ⟧ʳ
     ∘ᵐ η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
-  ≡⟨ ∘ᵐ-congˡ (⟦-ᶜ-wk-ren⟧≡ε∘env-⟨⟩-ᶜ _) ⟩
+  ≡⟨ ∘ᵐ-congˡ (⟦η-ᶜ-ren⟧≡ε∘η-PRA _) ⟩
        (   (η⁻¹ ∘ᵐ ⟨⟩-≤ z≤n)
-        ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+        ∘ᵐ η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
     ∘ᵐ η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
   ≡⟨ trans (∘ᵐ-assoc _ _ _) (∘ᵐ-assoc _ _ _) ⟩
        η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
-    ∘ᵐ env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ')))
+    ∘ᵐ η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ')))
     ∘ᵐ η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
   ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (trans (sym (∘ᵐ-assoc _ _ _)) (trans (∘ᵐ-congˡ (⟨⟩-η⁻¹-nat _)) (∘ᵐ-assoc _ _ _)))) ⟩
        η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
     ∘ᵐ η⁻¹
-    ∘ᵐ ⟨ 0 ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ 0 ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
     ∘ᵐ ⟨⟩-≤ z≤n
   ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-congʳ (⟨⟩-≤-nat _ _))) ⟩
        η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
     ∘ᵐ η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (∘ᵐ-congˡ (
       begin
         η⁻¹
@@ -124,24 +124,24 @@ open Model Mod
     ∘ᵐ ⟨⟩-≤ z≤n
     ∘ᵐ μ
     ∘ᵐ ⟨⟩-≤ z≤n
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ≡⟨ ∘ᵐ-congʳ (∘ᵐ-congʳ (trans (sym (∘ᵐ-assoc _ _ _)) (trans (∘ᵐ-congˡ (sym (⟨⟩-μ-≤₁ _))) (∘ᵐ-assoc _ _ _)))) ⟩
        η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
     ∘ᵐ ⟨⟩-≤ (+-monoˡ-≤ (suc τ ∸ τ') z≤n)
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ≡⟨ ∘ᵐ-congʳ (trans (sym (∘ᵐ-assoc _ _ _)) (trans (∘ᵐ-congˡ
       (trans (⟨⟩-≤-trans _ _) (sym (⟨⟩-≤-trans _ _)))) (∘ᵐ-assoc _ _ _))) ⟩
        η⁻¹
     ∘ᵐ ⟨⟩-≤ z≤n
     ∘ᵐ ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ≡⟨ sym (∘ᵐ-assoc _ _ _) ⟩
        (η⁻¹ ∘ᵐ ⟨⟩-≤ z≤n)
     ∘ᵐ ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
     ∘ᵐ μ
-    ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+    ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA (suc τ ∸ τ') (≤-trans (∸-monoˡ-≤ τ' p) (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
   ∎
 

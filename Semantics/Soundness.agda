@@ -323,13 +323,13 @@ mutual
     ∎
   C-soundness {Γ} {_} {unbox p V M} {unbox q W N} (unbox-cong {A} {C} {τ} r s) = 
     begin
-      ⟦ M ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ
+      ⟦ M ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ η-PRA τ p ⟩ᵐ
     ≡⟨ ∘ᵐ-congˡ (C-soundness s) ⟩
-      ⟦ N ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ
+      ⟦ N ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ η-PRA τ p ⟩ᵐ
     ≡⟨ ∘ᵐ-congʳ (cong ⟨ idᵐ ,_⟩ᵐ (∘ᵐ-congʳ (∘ᵐ-congˡ (cong ⟨ τ ⟩ᶠ (V-soundness r))))) ⟩
-      ⟦ N ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ W ⟧ᵛᵗ ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ
-    ≡⟨ ∘ᵐ-congʳ (cong ⟨ idᵐ ,_⟩ᵐ (∘ᵐ-congʳ (∘ᵐ-congʳ (cong (env-⟨⟩-ᶜ τ) (≤-irrelevant _ _))))) ⟩
-      ⟦ N ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ W ⟧ᵛᵗ ∘ᵐ env-⟨⟩-ᶜ τ q ⟩ᵐ
+      ⟦ N ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ W ⟧ᵛᵗ ∘ᵐ η-PRA τ p ⟩ᵐ
+    ≡⟨ ∘ᵐ-congʳ (cong ⟨ idᵐ ,_⟩ᵐ (∘ᵐ-congʳ (∘ᵐ-congʳ (cong (η-PRA τ) (≤-irrelevant _ _))))) ⟩
+      ⟦ N ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ W ⟧ᵛᵗ ∘ᵐ η-PRA τ q ⟩ᵐ
     ∎
   C-soundness (seq-return V M) =
     seq-return-sound V M

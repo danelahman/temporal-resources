@@ -17,7 +17,7 @@ open import Semantics.Renamings Mod
 
 open import Semantics.Interpretation.Properties.var-in-env-var-rename Mod
 
-open import Semantics.Renamings.Properties.env-⟨⟩-ᶜ-ren-naturality Mod
+open import Semantics.Renamings.Properties.η-PRA-ren-naturality Mod
 
 open import Util.Equality
 open import Util.Operations
@@ -946,36 +946,36 @@ mutual
       ∘ᵐ ⟨ idᵐ ,
               ε⊣
            ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V-rename (ρ -ʳ τ) V ⟧ᵛᵗ
-           ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
+           ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
     ≡⟨ ∘ᵐ-congˡ (C-rename≡∘ᵐ (cong-∷-ren {A = A} ρ) M) ⟩
          (⟦ M ⟧ᶜᵗ ∘ᵐ mapˣᵐ ⟦ ρ ⟧ʳ idᵐ)
       ∘ᵐ ⟨ idᵐ ,
               ε⊣
            ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V-rename (ρ -ʳ τ) V ⟧ᵛᵗ
-           ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
+           ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
     ≡⟨ ∘ᵐ-congʳ (cong (⟨ idᵐ ,_⟩ᵐ) (∘ᵐ-congʳ (∘ᵐ-congˡ (cong ⟨ τ ⟩ᶠ (V-rename≡∘ᵐ (ρ -ʳ τ) V))))) ⟩
          (⟦ M ⟧ᶜᵗ ∘ᵐ mapˣᵐ ⟦ ρ ⟧ʳ idᵐ)
       ∘ᵐ ⟨ idᵐ ,
               ε⊣
            ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ)
-           ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
+           ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
     ≡⟨ ∘ᵐ-assoc _ _ _ ⟩
          ⟦ M ⟧ᶜᵗ
       ∘ᵐ mapˣᵐ ⟦ ρ ⟧ʳ idᵐ
       ∘ᵐ ⟨ idᵐ ,
               ε⊣
            ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ)
-           ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
+           ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
     ≡⟨ ∘ᵐ-congʳ (
         begin
              ⟨ ⟦ ρ ⟧ʳ ∘ᵐ fstᵐ , idᵐ ∘ᵐ sndᵐ ⟩ᵐ
           ∘ᵐ ⟨ idᵐ ,
                   ε⊣
                ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ)
-               ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
+               ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ
         ≡⟨ sym (⟨⟩ᵐ-∘ᵐ _ _ _) ⟩
-             ⟨ (⟦ ρ ⟧ʳ ∘ᵐ fstᵐ) ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ) ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ ,
-               (idᵐ ∘ᵐ sndᵐ) ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ) ∘ᵐ env-⟨⟩-ᶜ τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ ⟩ᵐ
+             ⟨ (⟦ ρ ⟧ʳ ∘ᵐ fstᵐ) ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ) ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ ,
+               (idᵐ ∘ᵐ sndᵐ) ∘ᵐ ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ (⟦ V ⟧ᵛᵗ ∘ᵐ ⟦ ρ -ʳ τ ⟧ʳ) ∘ᵐ η-PRA τ (≤-trans p (ren-≤-ctx-time ρ)) ⟩ᵐ ⟩ᵐ
         ≡⟨ cong₂ ⟨_,_⟩ᵐ
              (trans
                (∘ᵐ-assoc _ _ _)
@@ -995,23 +995,23 @@ mutual
                          (trans
                            (∘ᵐ-assoc _ _ _)
                            (trans
-                             (∘ᵐ-congʳ (sym (env-⟨⟩-ᶜ-ren-nat τ p ρ)))
+                             (∘ᵐ-congʳ (sym (η-PRA-ren-nat τ p ρ)))
                              (sym (∘ᵐ-assoc _ _ _))))))
                      (sym (∘ᵐ-assoc _ _ _)))))) ⟩
-          ⟨ idᵐ ∘ᵐ ⟦ ρ ⟧ʳ , (ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ env-⟨⟩-ᶜ τ p) ∘ᵐ ⟦ ρ ⟧ʳ ⟩ᵐ
+          ⟨ idᵐ ∘ᵐ ⟦ ρ ⟧ʳ , (ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ η-PRA τ p) ∘ᵐ ⟦ ρ ⟧ʳ ⟩ᵐ
         ≡⟨ ⟨⟩ᵐ-∘ᵐ _ _ _ ⟩
-          ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ ∘ᵐ ⟦ ρ ⟧ʳ
+          ⟨ idᵐ , ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ ∘ᵐ η-PRA τ p ⟩ᵐ ∘ᵐ ⟦ ρ ⟧ʳ
         ∎) ⟩
          ⟦ M ⟧ᶜᵗ
       ∘ᵐ ⟨ idᵐ ,
               ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ
-           ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ
+           ∘ᵐ η-PRA τ p ⟩ᵐ
       ∘ᵐ ⟦ ρ ⟧ʳ
     ≡⟨ sym (∘ᵐ-assoc _ _ _) ⟩
          (   ⟦ M ⟧ᶜᵗ
           ∘ᵐ ⟨ idᵐ ,
                   ε⊣ ∘ᵐ ⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ
-               ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ)
+               ∘ᵐ η-PRA τ p ⟩ᵐ)
       ∘ᵐ ⟦ ρ ⟧ʳ
     ∎
   C-rename≡∘ᵐ ρ (delay τs M) =

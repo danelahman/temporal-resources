@@ -384,7 +384,7 @@ mutual
               → (V : Γ -ᶜ τ ⊢V⦂ [ τ ] A)
               → (M : Γ ∷ [ τ ] A ⊢C⦂ C)
               --------------------------------------------
-              → Γ ⊢C⦂ M [ Hd ↦ V-rename (-ᶜ-wk-ren τ) V ]c
+              → Γ ⊢C⦂ M [ Hd ↦ V-rename (η-ᶜ-ren τ) V ]c
                   == unbox p V (
                        (C-rename (exch-ren ∘ʳ wk-ren) M)
                           [ Hd ↦ box (var (Tl-⟨⟩ Hd)) ]c)   

@@ -6,6 +6,8 @@ open import Semantics.Model
 
 module Semantics.Interpretation (Mod : Model) where
 
+open import Data.Empty
+
 open import Relation.Nullary
 
 open import Syntax.Types
@@ -241,27 +243,44 @@ split-env⁻¹ (split-∷ p)          = mapˣᵐ (split-env⁻¹ p) idᵐ
 split-env⁻¹ (split-⟨⟩ {τ = τ} p) = ⟨ τ ⟩ᶠ (split-env⁻¹ p)
 
 -- Interaction of ⟨_⟩ modality and the time-travelling operation on contexts
+--
+-- This is a semantic counterpart to the PRA situation between (-) ⟨ τ ⟩
+-- and (-) -ᶜ τ witnessed by the renamings η-PRA-ren and ε-PRA-ren.
 
-env-⟨⟩-ᶜ : ∀ {Γ A}
-         → (τ : Time) → τ ≤ ctx-time Γ
-         → ⟦ Γ ⟧ᵉᵒ A →ᵐ ⟨ τ ⟩ᵒ (⟦ Γ -ᶜ τ ⟧ᵉᵒ A)
+η-PRA : ∀ {Γ A}
+      → (τ : Time)
+      → τ ≤ ctx-time Γ
+      → ⟦ Γ ⟧ᵉᵒ A →ᵐ ⟨ τ ⟩ᵒ (⟦ Γ -ᶜ τ ⟧ᵉᵒ A)
          
-env-⟨⟩-ᶜ {Γ} zero p =
+η-PRA {Γ} zero p =
   η
-env-⟨⟩-ᶜ {Γ ∷ B} (suc τ) p =
-     env-⟨⟩-ᶜ {Γ} (suc τ) p
+η-PRA {Γ ∷ B} (suc τ) p =
+     η-PRA {Γ} (suc τ) p
   ∘ᵐ fstᵐ
-env-⟨⟩-ᶜ {Γ ⟨ τ' ⟩} (suc τ) p with suc τ ≤? τ'
+η-PRA {Γ ⟨ τ' ⟩} (suc τ) p with suc τ ≤? τ'
 ... | yes q =
      μ⁻¹
   ∘ᵐ ⟨⟩-≤ (≤-reflexive (m+[n∸m]≡n q))
 ... | no ¬q =
      ⟨⟩-≤ (m≤n+m∸n (suc τ) τ')
   ∘ᵐ μ
-  ∘ᵐ ⟨ τ' ⟩ᶠ (env-⟨⟩-ᶜ {Γ} (suc τ ∸ τ')
+  ∘ᵐ ⟨ τ' ⟩ᶠ (η-PRA {Γ} (suc τ ∸ τ')
        (≤-trans
          (∸-monoˡ-≤ τ' p)
          (≤-reflexive (m+n∸n≡m (ctx-time Γ) τ'))))
+
+ε-PRA : ∀ {Γ A}
+      → (τ : Time)
+      → ⟦ Γ ⟨ τ ⟩ -ᶜ τ ⟧ᵉᵒ A →ᵐ ⟦ Γ ⟧ᵉᵒ A
+
+ε-PRA {Γ} zero =
+  η⁻¹
+ε-PRA {Γ} (suc τ) with suc τ ≤? suc τ
+... | yes p =
+  η⁻¹ ∘ᵐ
+  ⟨⟩-≤ (≤-reflexive (sym (n∸n≡0 τ)))
+... | no ¬p =
+  ⊥-elim (¬p ≤-refl)
 
 -- Projecting a variable out of an environment
 
@@ -350,7 +369,7 @@ mutual
     ⟦ M ⟧ᶜᵗ ∘ᵐ ⟨ idᵐ ,
                     ε⊣ {τ = τ}
                  ∘ᵐ (⟨ τ ⟩ᶠ ⟦ V ⟧ᵛᵗ)
-                 ∘ᵐ env-⟨⟩-ᶜ τ p ⟩ᵐ
+                 ∘ᵐ η-PRA τ p ⟩ᵐ
     
   infix 25 ⟦_⟧ᶜᵗ
 
