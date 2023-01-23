@@ -9,26 +9,30 @@ to wait for (car) parts to dry after the paint operation.
 
 The **main features** of this core language are:
 
-* Fitch-style, *temporally-graded modal types* `[ tau ] X` are used to
+* Fitch-style *temporally graded modal types* `[ tau ] X` are used to
   capture temporal resources, expressing that an `X`-value will be
   available in at most `tau` time steps, after which it becomes
   possible to unbox it.
   
-* A novel notion of *temporally-aware algebraic effects*, where
+* A novel notion of *temporally aware algebraic effects*, where
   operations' specifications include their execution times, and
   their continuations know that an operation's worth of additional
   time has passed before they start executing, making it possible to
   safely access further temporal resources in it.
   
-* *Effect handlers*, also temporally-aware, that have to respect the
+* *Effect handlers*, also temporally aware, that have to respect the
   temporal discipline of algebraic operations.
   
-* A *graded monads-based effect system* (with some added temporal
+* A *graded monads based effect system* (with some added temporal
   awareness) that modularly tracks the execution times of
   computations.
   
-The formalisation is developed and tested with Agda version 2.6.2.2
-and Agda Standard Library version 1.7.1.
+This formalisation supplements the paper **"When Programs Have to 
+Watch Paint Dry"** that will appear at [FoSSaCS 2023](https://etaps.org/2023/fossacs). 
+Its preprint is available on [arXiv](https://arxiv.org/abs/2210.07738).
+  
+The formalisation is developed and tested with **Agda version 2.6.2.2** 
+and **Agda Standard Library version 1.7.1**.
 
 The formalisation consists of **three main parts**:
 
@@ -43,14 +47,14 @@ The main modules presenting the core language are:
 * `Syntax/Language.agda` defines well-typed values and computations.
 
 * `Syntax/Renamings.agda` defines an inductive notion of renamings and
-  its action on well-typed terms (i.e., proves admissibility of
-  renaming).
+  its action on well-typed terms (i.e., proves the admissibility of
+  structural rules such as weakening, contraction, etc.).
   
-* `Syntax/Substitutions.agda` defines/proves substitution for
-  well-typed terms.
+* `Syntax/Substitutions.agda` defines/proves the action of
+  substitution for well-typed terms.
   
-* `Syntax/EquationalTheory.agda` defines a natural beta/eta-equational
-  theory for well-typed terms.
+* `Syntax/EquationalTheory.agda` defines a mathematically natural
+  beta/eta-equational theory for well-typed terms.
 
 ### Abstract category-theoretic denotational semantics 
 
@@ -82,16 +86,16 @@ modules presenting this model are:
 This abstract model is then used to give the core language a denotational
 semantics and prove it sound, in the following modules:
 
-* `Semantics/Interpretation.agda` defines the interpretation of types, 
-  contexts, and terms.
+* `Semantics/Interpretation.agda` defines the interpretation of types,
+  contexts, and well-typed values and computations.
   
 * `Semantics/Renamings.agda` defines the interpretation of renamings.
 
 * `Semantics/Renamings/Properties/VC-rename.agda` proves a semantic
-  renaming lemma.
+  renaming result.
   
 * `Semantics/Substitutions/Properties/VC-subst.agda` proves a semantic
-  substitution lemma.
+  substitution result.
   
 * `Semantics/Soundness.agda` proves the soundness of the
   interpretation.
@@ -151,10 +155,10 @@ What we currently do not have:
   argument to `μˢ` (with `k` one of its subterms) because `Tˢ-≤t` does
   not change the given tree height.
     
-* In `Semantics/Model/Example/TSets/`, some of them modules typecheck
-  extremely slowly due to the current definition of the presheaf model
-  and the structure on it producing humongous inequational Agda terms
-  in composite equations/diagrams, specifically:
+* In `Semantics/Model/Example/TSets/`, some of the modules typecheck
+  extremely slowly due to the current (naive, direct) definition of
+  the presheaf model and the structure on it producing humongous
+  inequational Agda terms in composite equations/diagrams, namely:
   
   * `Semantics/Model/Example/TSets/Monad/Strength/Properties/CartesianStructure.agda`
     typechecks very slowly, with `--experimental-lossy-unification`
@@ -178,6 +182,11 @@ What and how could be improved:
   measure, we could also work out the types of the individual cases
   and prove them as auxiliary lemmas (analogously to
   `Semantics/Renamings/Properties/var-not-in-ctx-after-ᶜ-wk-ren.agda`).
+  
+  Another option would be to rewrite the relevant parts of the
+  formalisation to work with an inductively defined graph of the -ᶜ
+  function (as opposed to its current recursive definition), as one
+  could then avoid the troublesome uses of `with` in the definition.
   
 * For the slowness of typechecking, we likely need to make some
   aspects of the concrete model abstract, and manually simplify the
