@@ -27,7 +27,7 @@ open import Util.Time
 --
 -- Note: For certain conveniences (such as the reading of ρ : Ren Γ Γ'
 -- as mapping variables in Γ to variables in Γ'), we define Ren in an
--- opposite direction to how they sometimes appear in the literature.
+-- opposite direction to how it sometimes appears in the literature.
 -- In other words, you should read Ren Γ Γ' as the hom-set of the
 -- opposite of the category of contexts and renamings between them.
 
@@ -38,9 +38,9 @@ data Ren : Ctx → Ctx → Set where
   _∘ʳ_        : ∀ {Γ Γ' Γ''} → Ren Γ' Γ'' → Ren Γ Γ' → Ren Γ Γ''
   -- weakening renaming
   wk-ren      : ∀ {Γ A} → Ren Γ (Γ ∷ A)
-  -- variable renaming
+  -- variable renaming (corresponds to contraction)
   var-ren     : ∀ {Γ A τ} → A ∈[ τ ] Γ → Ren (Γ ∷ A) Γ
-  -- graded monad renamings for ⟨_⟩ modality
+  -- strong monoidal functor renamings for ⟨_⟩ modality
   ⟨⟩-η-ren    : ∀ {Γ} → Ren (Γ ⟨ 0 ⟩) Γ
   ⟨⟩-η⁻¹-ren  : ∀ {Γ} → Ren Γ (Γ ⟨ 0 ⟩)
   ⟨⟩-μ-ren    : ∀ {Γ τ τ'} → Ren (Γ ⟨ τ + τ' ⟩) (Γ ⟨ τ ⟩ ⟨ τ' ⟩)
@@ -103,9 +103,7 @@ eq-ren refl = id-ren
 
 -- Renamings preserve time-passage modelled by contexts
 
-ren-≤-ctx-time : ∀ {Γ Γ'}
-               → Ren Γ Γ'
-               → ctx-time Γ ≤ ctx-time Γ'
+ren-≤-ctx-time : ∀ {Γ Γ'} → Ren Γ Γ' → ctx-time Γ ≤ ctx-time Γ'
 
 ren-≤-ctx-time id-ren =
   ≤-refl
@@ -130,9 +128,9 @@ ren-≤-ctx-time (cong-∷-ren ρ) =
 ren-≤-ctx-time (cong-⟨⟩-ren {τ = τ} ρ) =
   +-monoˡ-≤ τ (ren-≤-ctx-time ρ)
 
--- Interaction between the time-travelling operation on contexts and the ⟨_⟩ modality
+-- Interaction between the -ᶜ operation on contexts and the ⟨_⟩ modality
 --
--- As noted in Contexts.agda. These renamings witness that the context
+-- As noted in Contexts.agda, these renamings witness that the context
 -- modality (-) ⟨ τ ⟩ is a parametric right adjoint (PRA) to (-) -ᶜ τ
 
 η-PRA-ren : ∀ {Γ} → (τ : Time) → (τ ≤ ctx-time Γ) → Ren ((Γ -ᶜ τ) ⟨ τ ⟩) Γ
@@ -162,6 +160,8 @@ ren-≤-ctx-time (cong-⟨⟩-ren {τ = τ} ρ) =
   ⊥-elim (¬p ≤-refl)
 
 -- Weakening renaming for the time-travelling operation on contexts
+--
+-- This corresponds to (-) -ᶜ τ as a functor being pointed
 
 η-ᶜ-ren : ∀ {Γ} → (τ : Time) → Ren (Γ -ᶜ τ) Γ
 η-ᶜ-ren {Γ} zero =
@@ -254,8 +254,7 @@ cong-⟨⟩-ren {τ = τ'} ρ  -ʳ suc τ with suc τ ≤? τ'
 
 infixl 30 _-ʳ_
 
--- Action of renamings on variables (showing that reamings allow one
--- to move any variable under more ⟨_⟩ modalities)
+-- Action of renamings on variables
 
 var-rename : ∀ {Γ Γ'}
            → Ren Γ Γ'

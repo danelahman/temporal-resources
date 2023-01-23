@@ -28,6 +28,8 @@ open import Util.Time
 
 open Model Mod
 
+-- Semantics of substituting a value for a variable
+
 var-subst≡∘ᵐ : ∀ {Γ A B τ τ'}
              → (y : B ∈[ τ' ] Γ)
              → (x : A ∈[ τ ] Γ)

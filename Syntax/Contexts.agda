@@ -102,8 +102,8 @@ split-≡-++ᶜ = ≡-split refl
 
 -- Variable in a context
 --
--- The τ in x : A ∈[ τ ] Γ models that after x was brought
--- into scope, additional τ time units have passed
+-- The τ in x : A ∈[ τ ] Γ models that after x was brought into scope,
+-- additional τ time units have passed
 
 data _∈[_]_ (A : VType) : Time → Ctx → Set where
   Hd    : ∀ {Γ}      → A ∈[ 0 ] Γ ∷ A

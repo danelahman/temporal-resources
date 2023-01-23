@@ -24,7 +24,9 @@ open import Semantics.Model.Category.Derived Cat
 -- Unit
 
 η-[] : ∀ {A τ} → A →ᵐ [ τ ]ᵒ A
-η-[] {A} {τ} = []-≤ {A = A} z≤n ∘ᵐ ε⁻¹
+η-[] {A} {τ} =
+     []-≤ {A = A} z≤n
+  ∘ᵐ ε⁻¹
 
 
 η-[]-nat : ∀ {A B τ}

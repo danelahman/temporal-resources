@@ -24,7 +24,9 @@ open import Semantics.Model.Category.Derived Cat
 -- Counit
  
 ε-⟨⟩ : ∀ {A τ} → ⟨ τ ⟩ᵒ A →ᵐ A
-ε-⟨⟩ {A} {τ} = η⁻¹ ∘ᵐ ⟨⟩-≤ {A = A} z≤n
+ε-⟨⟩ {A} {τ} =
+     η⁻¹
+  ∘ᵐ ⟨⟩-≤ {A = A} z≤n
 
 ε-⟨⟩-nat : ∀ {A B τ}
          → (f : A →ᵐ B)

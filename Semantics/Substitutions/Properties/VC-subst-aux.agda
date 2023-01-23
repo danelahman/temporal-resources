@@ -38,7 +38,6 @@ open import Util.Time
 
 open Model Mod
 
-
 -- Auxiliary substitution lemma for the unbox case
 
 C-subst≡∘ᵐ-aux-unbox : ∀ {Γ A τ τ'}

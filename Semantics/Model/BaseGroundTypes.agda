@@ -17,7 +17,7 @@ record BaseGroundTypes : Set₁ where
 
   field
   
-    -- constant TSET (TODO: change to an object for every base type)
+    -- base type interpretation
     
     ConstObj : BaseType → Obj
 

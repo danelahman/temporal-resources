@@ -138,7 +138,7 @@ mutual
                    ∷ [ op-time op ] (type-of-gtype (arity op) ⇒ B ‼ τ'')
                  ⊢C⦂ B ‼ (op-time op + τ''))
             → Γ ⟨ τ ⟩ ∷ A ⊢C⦂ B ‼ τ'
-            --------------------------------------------------
+            ------------------------------------------------------------
             → Γ ⊢C⦂ B ‼ (τ + τ')
 
     -- unboxing a boxed value/resource after enough time has passed for it to be usable
